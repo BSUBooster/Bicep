@@ -56,19 +56,6 @@ configuration CreateADPDC
             DependsOn = "[WindowsFeature]DNS"
         }
 
-        xWaitforDisk Disk1
-        {
-            DiskNumber = 1
-            RetryIntervalSec =$RetryIntervalSec
-            RetryCount = $RetryCount
-        }
-
-        xDisk ADDataDisk {
-            DiskNumber = 1
-            DriveLetter = "F"
-            DependsOn = "[xWaitForDisk]Disk1"
-        }
-
         WindowsFeature ADDSInstall
         {
             Ensure = "Present"
@@ -95,10 +82,10 @@ configuration CreateADPDC
             DomainName = $DomainName
             DomainAdministratorCredential = $DomainCreds
             SafemodeAdministratorPassword = $DomainCreds
-            DatabasePath = "F:\NTDS"
-            LogPath = "F:\NTDS"
-            SysvolPath = "F:\SYSVOL"
-            DependsOn = @("[WindowsFeature]ADDSInstall", "[xDisk]ADDataDisk")
+            DatabasePath = "C:\Windows\NTDS"
+            LogPath = "C:\Windows\NTDS"
+            SysvolPath = "C:\Windows\SYSVOL"
+            DependsOn = @("[WindowsFeature]ADDSInstall")
         }
 
         xPendingReboot RebootAfterPromotion{
